@@ -1,19 +1,19 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import * as O from 'fp-ts/Option';
-import { GamesDao } from 'src/daos/games.dao';
+import { IGamesDao } from 'src/daos/games.dao.interface';
 import { Game } from 'src/domain/game';
 import { GamesHelper } from 'src/helpers/games.helper';
 import { GameModel } from 'src/models/game.model';
-import { gamesService, GamesService } from './games.service';
+import { iGamesService, IGamesService } from './games-service.interface';
 
 @Injectable()
-export class GamesBusiness implements GamesService {
+export class GamesService implements IGamesService {
   constructor(
-    @Inject(GamesDao) private _gamesDao: GamesDao,
+    @Inject(IGamesDao) private _gamesDao: IGamesDao,
     private _gamesHelper: GamesHelper,
   ) {}
 
-  public async create(options: gamesService.create.Options): Promise<Game> {
+  public async create(options: iGamesService.create.Options): Promise<Game> {
     const newGame: Game = new Game({
       id: this._gamesHelper.generateUuid(),
       version: '1',
@@ -31,7 +31,7 @@ export class GamesBusiness implements GamesService {
     return this._gamesDao.search({});
   }
 
-  public async getOne(options: gamesService.getOne.Options): Promise<Game> {
+  public async getOne(options: iGamesService.getOne.Options): Promise<Game> {
     const game: Game = O.toNullable(
       await this._gamesDao.getOne({
         id: options.id,
@@ -45,7 +45,7 @@ export class GamesBusiness implements GamesService {
     return game;
   }
 
-  public async update(options: gamesService.update.Options): Promise<Game> {
+  public async update(options: iGamesService.update.Options): Promise<Game> {
     throw new Error('Not implemented');
   }
 }

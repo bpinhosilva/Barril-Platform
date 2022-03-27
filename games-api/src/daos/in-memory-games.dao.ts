@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import * as O from 'fp-ts/Option';
 import { GameModel } from 'src/models/game.model';
-import { gamesDao, GamesDao } from './games.dao';
+import { iGamesDao, IGamesDao } from './games.dao.interface';
 
 @Injectable()
-export class InMemoryGamesDao implements GamesDao {
+export class InMemoryGamesDao implements IGamesDao {
   private _games: GameModel[] = [];
 
-  public async create(options: gamesDao.CreateOptions): Promise<GameModel> {
+  public async create(options: iGamesDao.create.Options): Promise<GameModel> {
     const game: GameModel = options.game;
 
     this._games.push(options.game);
@@ -16,17 +16,21 @@ export class InMemoryGamesDao implements GamesDao {
   }
 
   public async getOne(
-    options: gamesDao.GetOneOptions,
+    options: iGamesDao.getOne.Options,
   ): Promise<O.Option<GameModel>> {
     return O.fromNullable(this._games.find((g) => g.id === options.id));
   }
 
-  public async search(options: gamesDao.SearchOptions): Promise<GameModel[]> {
+  public async search(options: iGamesDao.search.Options): Promise<GameModel[]> {
     // return this._games.filter((game) => game.title === options.title);
     return this._games;
   }
 
-  public async update(options: gamesDao.UpdateOptions): Promise<void> {
+  public async update(options: iGamesDao.update.Options): Promise<void> {
     throw new Error('Method not implemented.');
+  }
+
+  public async remove(options: iGamesDao.remove.Options): Promise<void> {
+    throw new Error('Not implemented');
   }
 }

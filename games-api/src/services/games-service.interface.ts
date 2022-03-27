@@ -1,7 +1,7 @@
 import { OmitType } from '@nestjs/mapped-types';
 import { Game } from 'src/domain/game';
 
-export namespace gamesService {
+export namespace iGamesService {
   export namespace create {
     class CreateOptions extends OmitType(Game, ['id', 'version'] as const) {}
 
@@ -23,15 +23,15 @@ export namespace gamesService {
   }
 }
 
-export interface GamesService {
-  create(options: gamesService.create.Options): Promise<Game>;
+export interface IGamesService {
+  create(options: iGamesService.create.Options): Promise<Game>;
 
   getAll(): Promise<Game[]>;
 
-  getOne(options: gamesService.getOne.Options): Promise<Game>;
+  getOne(options: iGamesService.getOne.Options): Promise<Game>;
 
-  update(options: gamesService.update.Options): Promise<Game>;
+  update(options: iGamesService.update.Options): Promise<Game>;
 }
 
 // The framework needs a symbol, it cannot work with interface directly
-export const GamesService = Symbol('GamesService');
+export const IGamesService = Symbol('IGamesService');
