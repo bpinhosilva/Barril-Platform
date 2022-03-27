@@ -2,20 +2,30 @@ import * as O from 'fp-ts/Option';
 import { GameModel } from 'src/models/game.model';
 
 export namespace gamesDao {
+  export class CreateOptions {
+    game: GameModel;
+  }
+
   export class GetOneOptions {
-    id: number;
+    id: string;
   }
 
   export class SearchOptions {
     title?: string;
+    // limit
+    // offset
   }
 
-  export class UpdateOptions {}
+  export class UpdateOptions {
+    game: GameModel;
+  }
 
   export class DeleteOptions {}
 }
 
 export interface GamesDao {
+  create(options: gamesDao.CreateOptions): Promise<GameModel>;
+
   getOne(options: gamesDao.GetOneOptions): Promise<O.Option<GameModel>>;
 
   search(options: gamesDao.SearchOptions): Promise<GameModel[]>;

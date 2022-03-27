@@ -1,47 +1,37 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import * as O from 'fp-ts/Option';
-import { GamesDao } from 'src/daos/games.dao';
+import { OmitType } from '@nestjs/mapped-types';
 import { Game } from 'src/domain/game';
 
 export namespace gamesService {
   export namespace create {
-    export class Options {}
+    class CreateOptions extends OmitType(Game, ['id', 'version'] as const) {}
+
+    export class Options {
+      game: CreateOptions;
+    }
   }
 
   export namespace getOne {
     export class Options {
-      id: number;
+      id: string;
     }
   }
 
   export namespace update {
-    export class Options {}
-  }
-}
-
-@Injectable()
-export class GamesService {
-  constructor(@Inject(GamesDao) private _gamesDao: GamesDao) {}
-
-  public async create(options: gamesService.create.Options): Promise<void> {}
-
-  public async getAll() {
-    return this._gamesDao.search({});
-  }
-
-  public async getOne(options: gamesService.getOne.Options): Promise<Game> {
-    const game: Game = O.toNullable(
-      await this._gamesDao.getOne({
-        id: options.id,
-      }),
-    );
-
-    if (!game) {
-      throw new NotFoundException('Game not found.');
+    export class Options {
+      game: Game;
     }
-
-    return game;
   }
-
-  public async update(options: gamesService.update.Options) {}
 }
+
+export interface GamesService {
+  create(options: gamesService.create.Options): Promise<Game>;
+
+  getAll(): Promise<Game[]>;
+
+  getOne(options: gamesService.getOne.Options): Promise<Game>;
+
+  update(options: gamesService.update.Options): Promise<Game>;
+}
+
+// The framework needs a symbol, it cannot work with interface directly
+export const GamesService = Symbol('GamesService');
