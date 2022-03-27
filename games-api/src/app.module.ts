@@ -7,12 +7,14 @@ import { InMemoryGamesDao } from './daos/in-memory-games.dao';
 import { GamesHelper } from './helpers/games.helper';
 import { GamesService } from './services/games-service';
 import { IGamesService } from './services/games-service.interface';
+import { GamesServiceConverter } from './converters/games-service.converter';
 
 @Module({
   imports: [],
   controllers: [AppController, GamesController],
   providers: [
     GamesHelper,
+    GamesServiceConverter,
     {
       provide: IGamesService,
       useClass: GamesService,

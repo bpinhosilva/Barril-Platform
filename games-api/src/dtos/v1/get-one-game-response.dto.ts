@@ -1,22 +1,8 @@
-import { ImageDto } from './image.dto';
+import { BaseGameResponseDto } from './base-game-response.dto';
 
-export class GetOneGameResponseDto {
-  id: string;
-  category: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  images: ImageDto[];
-  type: string;
-  tags: string[];
-  author: string;
-  replayBundleUrlJson: string;
-  duration: number;
-  isDownloadable: boolean;
-  isStreamable: boolean;
-  version: string;
-
+export class GetOneGameResponseDto extends BaseGameResponseDto {
   constructor(params: GetOneGameResponseDto) {
+    super(params);
     Object.assign(this, params);
   }
 }

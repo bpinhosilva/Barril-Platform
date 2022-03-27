@@ -1,6 +1,6 @@
 export class ImageModel {
   id: string;
-  url: string;
+  filename: string;
   type: number;
 
   constructor(partial: ImageModel) {

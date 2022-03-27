@@ -1,4 +1,10 @@
-import { IsArray, IsBoolean, IsNotEmpty } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsBoolean,
+  IsNotEmpty,
+  ValidateNested,
+} from 'class-validator';
 import { ImageDto } from './image.dto';
 
 export class CreateGameDto {
@@ -14,8 +20,9 @@ export class CreateGameDto {
   @IsNotEmpty()
   description: string;
 
-  @IsNotEmpty()
-  @IsArray()
+  @IsArray({})
+  @ValidateNested({ each: true })
+  @Type(() => ImageDto)
   images: ImageDto[];
 
   @IsNotEmpty()

@@ -1,6 +1,11 @@
+import { IsNotEmpty, IsNumber } from 'class-validator';
+
 export class ImageDto {
-  id: string;
-  url: string;
+  @IsNotEmpty()
+  filename: string;
+
+  @IsNotEmpty()
+  @IsNumber()
   type: number;
 
   constructor(partial: ImageDto) {

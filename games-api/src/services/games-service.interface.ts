@@ -1,9 +1,20 @@
 import { OmitType } from '@nestjs/mapped-types';
 import { Game } from 'src/domain/game';
+import { Image } from 'src/domain/image';
 
 export namespace iGamesService {
   export namespace create {
-    class CreateOptions extends OmitType(Game, ['id', 'version'] as const) {}
+    class CreateImageOptions extends OmitType(Image, ['id', 'url'] as const) {
+      filename: string;
+    }
+
+    class CreateOptions extends OmitType(Game, [
+      'id',
+      'version',
+      'images',
+    ] as const) {
+      images: CreateImageOptions[];
+    }
 
     export class Options {
       game: CreateOptions;

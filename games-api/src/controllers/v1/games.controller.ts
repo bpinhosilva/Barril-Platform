@@ -13,8 +13,10 @@ export class GamesController {
   constructor(@Inject(IGamesService) private _gamesService: IGamesService) {}
 
   @Get()
-  public async getAll(): Promise<any> {
-    return await this._gamesService.getAll();
+  public async getAll(): Promise<GetOneGameResponseDto[]> {
+    const games: Game[] = await this._gamesService.getAll();
+
+    return games.map((game) => new GetOneGameResponseDto(game));
   }
 
   @Get(':id')

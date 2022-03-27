@@ -6,4 +6,8 @@ export class GamesHelper {
   public generateUuid(): string {
     return uuidv4();
   }
+
+  public getImageCdnUrl(filename: string): URL {
+    return new URL(`http://localhost:9001/images/${filename}`);
+  }
 }
