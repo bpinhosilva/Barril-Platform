@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  games-api:
+    container_name: games-api
+    build:
+      context: .
+      target: production
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    command: npm run start:prod
+    env_file:
+      - .env
+    networks:
+      - webnet
+    depends_on:
+      - mongodb
+
+  mongodb:
+    container_name: games-database
+    image: mongo:4.0
+    ports:
+      - '27017:27017'
+    networks:
+      - webnet
+
+networks:
+  webnet:
