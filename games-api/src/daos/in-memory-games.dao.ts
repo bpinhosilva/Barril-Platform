@@ -22,11 +22,10 @@ export class InMemoryGamesDao implements IGamesDao {
   }
 
   public async search(options: iGamesDao.search.Options): Promise<GameModel[]> {
-    // return this._games.filter((game) => game.title === options.title);
     return this._games;
   }
 
-  public async update(options: iGamesDao.update.Options): Promise<void> {
+  public async update(options: iGamesDao.update.Options): Promise<GameModel> {
     throw new Error('Method not implemented.');
   }
 

@@ -1,8 +1,22 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  Logger,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { Game } from 'src/domain/game';
 import { CreateGameResponseDto } from 'src/dtos/v1/create-game-response.dto';
 import { CreateGameDto } from 'src/dtos/v1/create-game.dto';
 import { GetOneGameResponseDto } from 'src/dtos/v1/get-one-game-response.dto';
+import { ListAllGamesDto } from 'src/dtos/v1/list-all-games.dto';
+import { UpdateGameResponseDto } from 'src/dtos/v1/update-game-response.dto';
+import { UpdateGameDto } from 'src/dtos/v1/update-game.dto';
 import { IGamesService } from 'src/services/games-service.interface';
 
 @Controller({
@@ -10,11 +24,19 @@ import { IGamesService } from 'src/services/games-service.interface';
   version: '1',
 })
 export class GamesController {
-  constructor(@Inject(IGamesService) private _gamesService: IGamesService) {}
+  private readonly _logger: Logger;
+
+  constructor(@Inject(IGamesService) private _gamesService: IGamesService) {
+    this._logger = new Logger(GamesController.name);
+  }
 
   @Get()
-  public async getAll(): Promise<GetOneGameResponseDto[]> {
-    const games: Game[] = await this._gamesService.getAll();
+  public async getAll(
+    @Query() query: ListAllGamesDto,
+  ): Promise<GetOneGameResponseDto[]> {
+    this._logger.log(JSON.stringify(query));
+
+    const games: Game[] = await this._gamesService.getAll(query);
 
     return games.map((game) => new GetOneGameResponseDto(game));
   }
@@ -35,5 +57,24 @@ export class GamesController {
     const game: Game = await this._gamesService.create({ game: createGameDto });
 
     return new CreateGameResponseDto(game);
+  }
+
+  @Put(':id')
+  public async update(
+    @Param('id') id: string,
+    @Body() updateGameDto: UpdateGameDto,
+  ): Promise<UpdateGameResponseDto> {
+    const game: Game = await this._gamesService.update({
+      game: { ...updateGameDto, id },
+    });
+
+    return new UpdateGameResponseDto(game);
+  }
+
+  @Delete(':id')
+  public async delete(@Param('id') id: string): Promise<void> {
+    await this._gamesService.remove({
+      id,
+    });
   }
 }

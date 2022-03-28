@@ -17,8 +17,8 @@ export namespace iGamesDao {
   export namespace search {
     export class Options {
       title?: string;
-      // limit
-      // offset
+      limit: number;
+      offset: number;
     }
   }
 
@@ -29,7 +29,9 @@ export namespace iGamesDao {
   }
 
   export namespace remove {
-    export class Options {}
+    export class Options {
+      id: string;
+    }
   }
 }
 
@@ -40,7 +42,7 @@ export interface IGamesDao {
 
   search(options: iGamesDao.search.Options): Promise<GameModel[]>;
 
-  update(options: iGamesDao.update.Options): Promise<void>;
+  update(options: iGamesDao.update.Options): Promise<GameModel>;
 
   remove(options: iGamesDao.remove.Options): Promise<void>;
 }
