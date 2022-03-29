@@ -1,55 +1,12 @@
-import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsBoolean,
-  IsNotEmpty,
-  ValidateNested,
-} from 'class-validator';
-import { ImageDto } from './image.dto';
+import { IsNotEmpty } from 'class-validator';
+import { BaseGameDto } from './base-game.dto';
 
-export class UpdateGameDto {
-  @IsNotEmpty()
-  category: string;
-
-  @IsNotEmpty()
-  title: string;
-
-  @IsNotEmpty()
-  subtitle: string;
-
-  @IsNotEmpty()
-  description: string;
-
-  @IsArray({})
-  @ValidateNested({ each: true })
-  @Type(() => ImageDto)
-  images: ImageDto[];
-
-  @IsNotEmpty()
-  type: string;
-
-  @IsArray()
-  tags: string[];
-
-  @IsNotEmpty()
-  author: string;
-
-  @IsNotEmpty()
-  replayBundleUrlJson: string;
-
-  @IsNotEmpty()
-  duration: number;
-
-  @IsBoolean()
-  isDownloadable: boolean;
-
-  @IsBoolean()
-  isStreamable: boolean;
-
+export class UpdateGameDto extends BaseGameDto {
   @IsNotEmpty()
   version: string;
 
   constructor(params: UpdateGameDto) {
+    super(params);
     Object.assign(this, params);
   }
 }

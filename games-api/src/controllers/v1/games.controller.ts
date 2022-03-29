@@ -13,6 +13,7 @@ import {
 import { Game } from 'src/domain/game';
 import { CreateGameResponseDto } from 'src/dtos/v1/create-game-response.dto';
 import { CreateGameDto } from 'src/dtos/v1/create-game.dto';
+import { GetAllGamesResponseDto } from 'src/dtos/v1/get-all-games-response.dto';
 import { GetOneGameResponseDto } from 'src/dtos/v1/get-one-game-response.dto';
 import { ListAllGamesDto } from 'src/dtos/v1/list-all-games.dto';
 import { UpdateGameResponseDto } from 'src/dtos/v1/update-game-response.dto';
@@ -33,12 +34,14 @@ export class GamesController {
   @Get()
   public async getAll(
     @Query() query: ListAllGamesDto,
-  ): Promise<GetOneGameResponseDto[]> {
+  ): Promise<GetAllGamesResponseDto> {
     this._logger.log(JSON.stringify(query));
 
     const games: Game[] = await this._gamesService.getAll(query);
 
-    return games.map((game) => new GetOneGameResponseDto(game));
+    return new GetAllGamesResponseDto({
+      listings: games.map((game) => new GetOneGameResponseDto(game)),
+    });
   }
 
   @Get(':id')
