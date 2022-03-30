@@ -8,6 +8,6 @@ export class GamesHelper {
   }
 
   public getImageCdnUrl(filename: string): URL {
-    return new URL(`http://localhost:9001/images/${filename}`);
+    return new URL(`http://localhost:3000/images/${filename}`);
   }
 }

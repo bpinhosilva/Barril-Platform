@@ -14,7 +14,7 @@ import { IGamesService } from './services/games-service.interface';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/games'),
+    MongooseModule.forRoot('mongodb://games-database/games'),
     MongooseModule.forFeature([{ name: GameModel.name, schema: GameSchema }]),
   ],
   controllers: [AppController, GamesController],

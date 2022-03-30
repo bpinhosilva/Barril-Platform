@@ -27,4 +27,6 @@ COPY . .
 
 COPY --from=development /usr/src/app/dist ./dist
 
+COPY --from=development /usr/src/app/src/images ./src/images
+
 CMD ["node", "dist/main"]
